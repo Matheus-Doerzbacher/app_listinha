@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:listinha/src/configuration/configuration_page.dart';
 import 'package:listinha/src/home/home_page.dart';
 import 'package:listinha/src/shared/theme/theme.dart';
 
@@ -13,7 +14,10 @@ class AppWidget extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const HomePage(),
+      routes: {
+        '/': (context) => const HomePage(),
+        '/config': (context) => const ConfigurationPage(),
+      },
     );
   }
 }
