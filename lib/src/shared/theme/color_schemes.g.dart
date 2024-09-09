@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 part of 'theme.dart';
 
 final ColorScheme _lightColorScheme = const ColorScheme(
@@ -98,5 +97,3 @@ final ColorScheme _darkColorScheme = const ColorScheme(
   surfaceContainerHigh: Color(4280822319),
   surfaceContainerHighest: Color(4281546042),
 );
-
-
