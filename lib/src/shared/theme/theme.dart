@@ -22,6 +22,7 @@ ThemeData get darkTheme => ThemeData(
         centerTitle: true,
         backgroundColor: _darkColorScheme.primaryContainer,
       ),
+      segmentedButtonTheme: _segmentedButtonThemeData,
     );
 
 SegmentedButtonThemeData get _segmentedButtonThemeData =>
@@ -30,12 +31,12 @@ SegmentedButtonThemeData get _segmentedButtonThemeData =>
         textStyle: WidgetStateProperty.resolveWith<TextStyle>((states) {
           if (states.contains(WidgetState.selected)) {
             return const TextStyle(
-              fontSize: 10,
+              fontSize: 11,
               overflow: TextOverflow.ellipsis,
             );
           }
           return const TextStyle(
-            fontSize: 12,
+            fontSize: 13,
           );
         }),
       ),
