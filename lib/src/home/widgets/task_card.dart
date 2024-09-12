@@ -1,23 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:listinha/src/shared/service/realm/models/tasks/task_model.dart';
 
+enum TaskCardStatus {
+  pending(Icons.access_time, 'Pendente'),
+  completed(Icons.check, 'Completa'),
+  disable(Icons.cancel_outlined, 'Desativada');
+
+  final IconData icon;
+  final String text;
+
+  const TaskCardStatus(this.icon, this.text);
+}
+
 class TaskCard extends StatelessWidget {
   final TaskBoard board;
   const TaskCard({super.key, required this.board});
 
   double getProgress(List<TaskModel> tasks) {
-    return 0.8;
+    if (tasks.isEmpty) return 0;
+    final completedTasks = tasks.where((task) => task.complete).length;
+    return completedTasks / tasks.length;
+  }
+
+  String getProgressText(List<TaskModel> tasks) {
+    final completedTasks = tasks.where((task) => task.complete).length;
+    return '$completedTasks/${tasks.length}';
+  }
+
+  TaskCardStatus getStatus(TaskBoard board, double progress) {
+    if (!board.enable) {
+      return TaskCardStatus.disable;
+    } else if (progress < 1.0) {
+      return TaskCardStatus.pending;
+    } else {
+      return TaskCardStatus.completed;
+    }
+  }
+
+  Color getBackgroundColor(TaskCardStatus status, ThemeData theme) {
+    switch (status) {
+      case TaskCardStatus.pending:
+        return theme.colorScheme.primaryContainer;
+      case TaskCardStatus.completed:
+        return theme.colorScheme.tertiaryContainer;
+      case TaskCardStatus.disable:
+        return theme.colorScheme.errorContainer;
+    }
+  }
+
+  Color getColor(TaskCardStatus status, ThemeData theme) {
+    switch (status) {
+      case TaskCardStatus.pending:
+        return theme.colorScheme.primary;
+      case TaskCardStatus.completed:
+        return theme.colorScheme.tertiary;
+      case TaskCardStatus.disable:
+        return theme.colorScheme.error;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     final progress = getProgress(board.tasks);
-    const progressText = '1/5';
+    final progressText = getProgressText(board.tasks);
     final title = board.title;
-    const color = Colors.red;
-    final backgrouColor = Colors.red.withOpacity(0.5);
-    const statusText = 'Pendente';
-    const iconData = Icons.account_box;
+
+    final status = getStatus(board, progress);
+    final statusText = status.text;
+    final iconData = status.icon;
+
+    final backgrouColor = getBackgroundColor(status, theme);
+    final color = getColor(status, theme);
 
     return Container(
       height: 140,
@@ -32,20 +87,43 @@ class TaskCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Row(
+          Row(
             children: [
-              Icon(iconData),
-              Spacer(),
-              Text(statusText),
+              Icon(
+                iconData,
+                color: theme.iconTheme.color?.withOpacity(0.5),
+              ),
+              const Spacer(),
+              Text(
+                statusText,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: theme.textTheme.bodySmall?.color?.withOpacity(0.5),
+                ),
+              ),
             ],
           ),
           const Spacer(),
-          Text(title),
-          LinearProgressIndicator(
-            value: progress,
-            color: color,
+          Text(
+            title,
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const Text(progressText),
+          const SizedBox(height: 8),
+          if (board.tasks.isNotEmpty)
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                LinearProgressIndicator(
+                  value: progress,
+                  color: color,
+                ),
+                const SizedBox(height: 2),
+                Text(progressText),
+              ],
+            ),
         ],
       ),
     );

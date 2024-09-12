@@ -38,7 +38,37 @@ class _HomePageState extends State<HomePage> {
               ),
               itemCount: 100,
               itemBuilder: (context, index) {
-                final model = TaskBoard(Uuid.v4(), 'Compra');
+                final model = TaskBoard(
+                  Uuid.v4(),
+                  'Nova lista de tarefas',
+                  // tasks: [
+                  //   TaskModel(
+                  //     Uuid.v4(),
+                  //     'Compras de supermercado',
+                  //     complete: true,
+                  //   ),
+                  //   TaskModel(
+                  //     Uuid.v4(),
+                  //     'Compras de roupas',
+                  //     complete: true,
+                  //   ),
+                  //   TaskModel(
+                  //     Uuid.v4(),
+                  //     'Compras de eletrônicos',
+                  //     complete: true,
+                  //   ),
+                  //   TaskModel(
+                  //     Uuid.v4(),
+                  //     'Compras de material escolar',
+                  //     complete: true,
+                  //   ),
+                  //   TaskModel(
+                  //     Uuid.v4(),
+                  //     'Compras de presentes',
+                  //     complete: true,
+                  //   ),
+                  // ],
+                );
                 return TaskCard(board: model);
               },
               separatorBuilder: (context, index) {
