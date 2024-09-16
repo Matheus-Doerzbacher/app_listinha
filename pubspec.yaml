@@ -19,6 +19,7 @@ dependencies:
   result_dart: ^1.1.1
   flutter_modular: ^6.3.4
   realm: ^3.4.1
+  rx_notifier: ^2.3.0
 
 dev_dependencies:
   flutter_test:
